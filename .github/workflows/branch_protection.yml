@@ -34,14 +34,13 @@ jobs:
   invalid-pr:
     needs: [release-to-main, develop-to-release, feature-to-develop]
     runs-on: ubuntu-latest
-    if: |
-      !(
-        (startsWith(github.head_ref, 'feature/') && github.base_ref == 'develop') ||
-        (github.head_ref == 'develop' && startsWith(github.base_ref, 'release/')) ||
-        (startsWith(github.head_ref, 'release/') && github.base_ref == 'main')
-      )
-    steps:
-      - name: Invalidate PR
-        run: |
-          echo "Invalid PR: This PR does not follow the GitFlow branch rules."
-          exit 1
+    run: |
+          if [[ ${{ github.event.pull_request.head.ref }} == feature/* && ${{ github.event.pull_request.base.ref }} == develop ]] ||
+             [[ ${{ github.event.pull_request.head.ref }} == develop && ${{ github.event.pull_request.base.ref }} == release/* ]] ||
+             [[ ${{ github.event.pull_request.head.ref }} == release/* && ${{ github.event.pull_request.base.ref }} == main ]]; then
+            echo "Valid PR"
+            exit 0
+          else
+            echo "Invalid PR: This PR does not follow the GitFlow branch rules."
+            exit 1
+          fi
