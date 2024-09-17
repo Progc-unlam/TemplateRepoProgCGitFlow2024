@@ -1,4 +1,4 @@
-### Este repo se utilizara durante la cursada de Programación Concurrente
+### Este repo se utilizara durante la cursada de Programación Concurrente.
 
 Al menos 3 miembros deberán aprobar los code-reviews antes de que se mergeen al Branch destino.
 
